@@ -2,22 +2,22 @@
 # set -e
 CMD=$(basename $0)
 HELP=$(cat <<EOF 
-Usage: $CMD [FUNCTION] [INDIR] [OUTDIR] [MAPPERS] ... \n
+Usage: $CMD [FUNCTION] [INDIR] [OUTDIR] [MAPPERS] ...
 \n
-Map a FUNCTION over a set of files in the directory, INDIR, and output  \n
-results to a directory, OUTDIR, with the same base name.  FUNCTION \n
-must accept a file name as its first parameter (such as 'grep',  \n
-'sort', or 'awk').  A set of parallel processes are launched, equal to \n
-MAPPERS.  If MAPPERS is not given, it defaults to the number of CPUs \n
-detected on the system, or 2 otherwise. \n
+\n Map a FUNCTION over a set of files in the directory, INDIR, and output
+\n results to a directory, OUTDIR, with the same base name.  FUNCTION
+\n must accept a file name as its first parameter (such as 'grep',  
+\n 'sort', or 'awk').  A set of parallel processes are launched, equal to
+\n MAPPERS.  If MAPPERS is not given, it defaults to the number of CPUs 
+\n detected on the system, or 2 otherwise. 
 \n
-Examples:  $CMD sort /tmp/files /tmp/sorted 4 \n
+\n Examples:  $CMD sort /tmp/files /tmp/sorted 4
 \n
-           # using map with a user-defined function \n 
-           gzsort () { gunzip -c $1 | sort | gzip --fast; } \n
-           typeset -fx gzsort  ##  export to subshell \n
-           $CMD gzsort ingz outgz                      \n
-EOF
+\n           # using map with a user-defined function
+\n           gzsort () { gunzip -c $1 | sort | gzip --fast; } 
+\n           typeset -fx gzsort  ##  export to subshell
+\n           $CMD gzsort ingz outgz                    
+\n EOF
 )
 
 if [ $# -eq 4 ]; then
