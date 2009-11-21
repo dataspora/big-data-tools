@@ -1,0 +1,35 @@
+This directory contains several files relevant to operating on very
+large data sets.
+
+== Map Function in Bash ==
+
+- map.sh - a map function implemented in Bash
+
+When multi-core processors are the norm, it is only reasonable that we
+ought to be able to parallelize even shell scripts.  This script
+provides a means for operating in parallel on sets of files contained
+in directories.
+
+== Reservoir Sampling ==
+
+- samplen.py - a reservoir sampler implemented in Python
+- samplen.pl - a reservoir sampler implemented in Perl
+
+Algorithms that perform calculations on evolving data streams, but in
+fixed memory, have increasing relevance in the Age of Big Data.
+
+The reservoir sampling algorithm outputs a sample of N lines from a
+file of undetermined size. It does so in a single pass, using memory
+proportional to N.
+
+These two features -- (i) a constant memory footprint and (ii) a
+capacity to operate on files of indeterminate size -- make it ideal
+for working with very large data sets common to event processing.
+
+While it has likely been multiply discovered and implemented, like
+many algorithms, it was codified by Knuth's The Art of Computer
+Programming.
+
+The trick of this algorithm is to first fill up the sample buffer, and
+afterwards, to probabilistically replace it with additional lines of
+input.
