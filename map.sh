@@ -17,7 +17,7 @@ Usage: $CMD [FUNCTION] [INDIR] [OUTDIR] [MAPPERS] ...
 \n           gzsort () { gunzip -c $1 | sort | gzip --fast; } 
 \n           typeset -fx gzsort  ##  export to subshell
 \n           $CMD gzsort ingz outgz                    
-\n EOF
+EOF
 )
 
 if [ $# -eq 4 ]; then
@@ -45,7 +45,6 @@ else
     mkdir $out
 fi
 
-echo "running with func=$func in=$in out=$out nmap=$nmap"
 ls $in |  xargs -P $nmap -I{} sh -c '$func "$in"/"$1" > "$out"/"$1"' -- {}
 
 ## cleanup in event of any failure
