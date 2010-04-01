@@ -1,12 +1,23 @@
 #! /bin/bash
+# ProvisionRapache.sh
+# Author: mike@metamarketsgroup.com
+# 
+# A bash script to pass to the 'user-data-file' parameter
+# of an EC2 launch command, as follows:
+#
+#   ec2-run-instances --region us-west-1 \
+#   ami-b93a6bfc \
+#    --user-data-file provisionRapache.sh \
+#    --instance-type m1.large \
+#    --key dataspora-key \
+#    --group metamarkets 
 
-## Amazon testing -- nixay -- control security with security groups
+## change some security limits
 cat << EOF >> /etc/security/limits.conf
 root soft nofile 655350
 root hard nofile 655350
 #new end of file
 EOF
-
 
 ## R INSTALLATION
 ## let's grab the latest R version; alter sources.list and export a key
@@ -39,7 +50,7 @@ apt-get install -y screen
 apt-get install -y r-cran-rmysql
 apt-get install -y r-cran-cairodevice
 
-# apt-get install -y libxt-dev
+## apt-get install -y libxt-dev
 wget http://biostat.mc.vanderbilt.edu/rapache/files/rapache-1.1.8.tar.gz
 tar xvzf rapache-1.1.8.tar.gz
 cd rapache-1.1.8
@@ -50,6 +61,8 @@ make install
 LOG=/mnt/var/log/apache2
 mkdir -p $LOG
 
+## customize the Apache settings for RApache
+## set REvalOnStartup as you see fit
 cat << EOF > /etc/apache2/sites-available/rapache 
 <VirtualHost *:80>
   ServerAdmin webmaster@localhost
@@ -86,8 +99,11 @@ cat << EOF > /etc/apache2/sites-available/rapache
 </VirtualHost>
 EOF
 
+## activate minimally necessary Apache modules
 a2enmod dump_io negotiation mime
 a2dismod alias autoindex dir deflate cgid status env setenvif auth_basic authn_file authz_groupfile authz_user authz_default
+
+## activate Apache sites
 a2dissite default
 a2ensite rapache
 
